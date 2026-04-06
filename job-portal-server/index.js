@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const cors = require('cors');
 const { MongoClient, ObjectId, ServerApiVersion } = require('mongodb');
@@ -6,6 +7,9 @@ require('dotenv').config();
 
 app.use(express.json());
 app.use(cors());
+
+const clientBuildPath = path.join(__dirname, '../job-portal-client/dist');
+app.use(express.static(clientBuildPath));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@job-portal.p2t0orx.mongodb.net`;
 
@@ -75,6 +79,10 @@ app.get("/all-jobs", async (req, res) => {
   }
 }
 run().catch(console.dir);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

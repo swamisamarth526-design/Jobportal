@@ -1,5 +1,12 @@
 {
+  "private": true,
+  "workspaces": [
+    "job-portal-client",
+    "job-portal-server"
+  ],
   "scripts": {
+    "postinstall": "cd job-portal-client && npm install && npm run build && cd ../job-portal-server && npm install",
+    "prestart": "cd job-portal-client && npm run build",
     "start": "cd job-portal-server && npm start"
   },
   "dependencies": {
